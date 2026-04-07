@@ -1,0 +1,7 @@
+agents:
+  - id: pesquisador
+    name: Pesquisador
+  - id: redator
+    name: Redator
+  - id: analista
+    name: Analista

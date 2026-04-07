@@ -1,0 +1,15 @@
+comandante:
+  version: "1.0.0"
+  project: commandOS
+  default_mode: sync
+  default_provider: anthropic
+  default_model: claude-sonnet-4-6
+  max_concurrent_agents: 3
+  approval_required: true
+  log_all_runs: true
+  paths:
+    agents: _commandos/agents
+    skills: _commandos/skills
+    squads: _commandos/squads
+    memory: _commandos/_memory
+    prompts: _commandos/core/prompts

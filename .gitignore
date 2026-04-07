@@ -1,0 +1,12 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.commandos-profile.json
+reports/
+package-lock.json
+/.claude
+coverage/
+_commandos/_memory/comandante-runs.json
