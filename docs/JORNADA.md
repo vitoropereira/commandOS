@@ -165,11 +165,59 @@ Criado o README completo do projeto cobrindo:
 
 Criado `docs/JORNADA.md` (este arquivo) como registro vivo de tudo que e construido, decidido e aprendido. Atualizado a cada sessao.
 
+### Primeira tentativa de uso
+
+Tentamos rodar `./bin/commandos` pela primeira vez. O banner renderiza perfeitamente (COMMAND OS em verde militar, provider info, tagline), mas **o input do teclado nao funciona** — o cursor aparece no prompt `>` mas nenhuma tecla e registrada.
+
+Testamos em:
+- Terminal integrado do VS Code — nao funciona
+- Terminal.app nativo do macOS — nao funciona
+- Modo non-interactive (`node dist/cli.mjs -p "diga oi"`) — **funciona perfeitamente**
+
+Isso confirmou que a engine LLM esta ok. O problema e especificamente no stdin do modo interativo (TUI Ink/React).
+
+### Investigacao do bug de input
+
+Disparamos um agente de exploracao que mapeou o fluxo completo de input:
+
+1. **earlyInput.ts** — captura keystrokes antes do REPL montar, depois transfere para o Ink
+2. **App.tsx** — configura `process.stdin.setRawMode(true)` e registra listeners
+3. **PromptInput.tsx** — decide `focus` baseado em 3 condicoes: `!isSearchingHistory && !isModalOverlayActive && !footerItemSelected`
+4. **overlayContext.tsx** — qualquer overlay modal ativo bloqueia todo input
+
+Adicionamos logs de debug em `App.tsx` (stdin setup) e `PromptInput.tsx` (focus decision). Resultado: **ZERO LOGS** — o que significa que o Ink app nunca chega a montar o REPL.
+
+### Causa raiz identificada (parcial)
+
+O problema esta em `showSetupScreens()` no arquivo `interactiveHelpers.tsx`. Antes de montar o REPL, o app passa por uma cadeia de dialogs:
+
+1. **Onboarding dialog** — se nunca completou onboarding
+2. **Trust dialog** — se nunca aceitou trust para o workspace
+3. **ApproveApiKey dialog** — se tem ANTHROPIC_API_KEY nova
+
+Esses dialogs renderizam via Ink mas podem estar falhando silenciosamente — o dialog aparece "invisivel" (sem output visual) mas bloqueia a Promise, impedindo que o REPL monte.
+
+**Workaround identificado:** `./bin/commandos --bare` pula todos os dialogs, ou usar provider 3rd-party (OpenAI/Gemini) que pula os checks Anthropic.
+
+### Status
+
+Bug aberto. Proximos passos:
+- Testar com `--bare` flag
+- Testar com provider OpenAI (pula dialogs Anthropic)
+- Se confirmar, desabilitar/adaptar os setup screens para o CommandOS
+
 ### Commits do dia
 
 - `0fdb531` — fix: redesign startup logo for readability
 - `6ee5a08` — docs: add JORNADA.md
 - `acc9d2e` — docs: add README.md with full project documentation
+- `3db8cda` — docs: update JORNADA.md with Day 2 entries
+
+### Arquivos modificados (debug, nao commitados)
+
+- `src/components/PromptInput/PromptInput.tsx` — log de debug no focus (temporario)
+- `src/components/StartupScreen.ts` — log de debug removido pelo linter
+- `src/ink/components/App.tsx` — log de debug no stdin setup (removido pelo linter)
 
 ---
 
