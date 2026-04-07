@@ -7,6 +7,7 @@ dist/
 .commandos-profile.json
 reports/
 package-lock.json
-/.claude
+/.claude/*
+!/.claude/skills/
 coverage/
 _commandos/_memory/comandante-runs.json
