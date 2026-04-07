@@ -141,6 +141,38 @@ Repositorio publicado em: **https://github.com/vitoropereira/commandOS**
 5. **Metafora militar** — Agentes como especialistas, Comandante como orquestrador, tarefas como missoes.
 6. **Dois repos, zero modificacoes** — OpenClaude e OpenSquad foram apenas lidos, nunca alterados.
 
+---
+
+## Dia 2 — 2026-04-07 | Documentacao e Identidade
+
+### Logo v2
+
+A primeira versao do banner ASCII ("COMMAND" + "OS" em block letters) ficou ilegivel no terminal — letras muito apertadas, impossivel de ler. Redesenhamos com letras mais espacadas e limpas usando caracteres Unicode padrao (`█ ╔ ═ ╗`). Resultado: legivel em qualquer largura de terminal.
+
+### README.md
+
+Criado o README completo do projeto cobrindo:
+- Quick Start (clone, install, configure, launch)
+- Todos os 8 subcomandos do Comandante com exemplos
+- Tabela dos 3 agentes iniciais + como criar novos
+- Sistema de skills (4 tipos: mcp, script, hybrid, prompt)
+- Squads e o exemplo instagram-carrossel
+- Diagrama de arquitetura (src/ + _commandos/)
+- Comandos de desenvolvimento
+- Roadmap futuro
+
+### Diario de Bordo
+
+Criado `docs/JORNADA.md` (este arquivo) como registro vivo de tudo que e construido, decidido e aprendido. Atualizado a cada sessao.
+
+### Commits do dia
+
+- `0fdb531` — fix: redesign startup logo for readability
+- `6ee5a08` — docs: add JORNADA.md
+- `acc9d2e` — docs: add README.md with full project documentation
+
+---
+
 ## Roadmap (futuro)
 
 - [ ] Web dashboard com autenticacao
